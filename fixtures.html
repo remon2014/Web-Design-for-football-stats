@@ -89,6 +89,12 @@
                 $response = $api->getTeamById($searchQuery->teams[0]->id);
                 $fixtures = $response->getFixtures('home')->fixtures;
             ?>
+              <div class="dropdown">
+                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown
+                   <span class="caret"></span></button>
+                  <ul class="dropdown-menu" id="dropdownMenu">
+                  </ul>
+                </div>
                 <h3>All home matches of Manchester United:</h3>
                 <table class="table table-striped">
                     <tr>

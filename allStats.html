@@ -70,7 +70,51 @@
           </div>
         </div>
       </nav>
+      <script type="text/javascript">
+            $.ajax({
+              headers: { 'X-Auth-Token': '532d544a2b70445e9b818d6852a73979' },
+              url: 'http://api.football-data.org/v1/competitions/445/teams',
+              dataType: 'json',
+              type: 'GET',
+          }).done(function(response) {
+              var dropdown = document.getElementById("dropdownMenu");
+              
+              // do something with the response, e.g. isolate the id of a linked resource        
+              // var regex = /.*?(\d+)$/; // the ? makes the first part non-greedy
+              // var res = regex.exec(response.fixtures[0]._links.awayTeam.href);
+              // var teamId = res[1];
+              console.log(response.teams);
+              teams = response.teams;
+              for (x = 0; x < teams.length; x++)
+              {
+                teamlink = teams[x]._links.self['href'];
+                teamid = teamlink.replace("http://api.football-data.org/v1/teams/","");
+                var entry = document.createElement('li');
+                // entry.appendChild(document.createTextNode(teams[x].name));
+                var link = document.createElement('a');
+                link.setAttribute('href','?='+teamid);
+                link.appendChild(document.createTextNode(teams[x].name));
+                entry.appendChild(link);
+                dropdown.appendChild(entry);
+                
+              }
+              console.log(window.location.href);
+              teamID = window.location.href.replace("http://www.footystats.com/allStats.html?=","");
+              console.log(teamID);
+              teamFixtureURL = "http://api.football-data.org/v1/teams/" + teamID + "/fixtures";
+              console.log(teamFixtureURL);
 
+          }); 
+          </script>
+
+        <!--<?php
+          $uri = 'http://api.football-data.org/v1/competitions/354/fixtures/?matchday=22';
+          $reqPrefs['http']['method'] = 'GET';
+          $reqPrefs['http']['header'] = 'X-Auth-Token: YOUR_API_TOKEN';
+          $stream_context = stream_context_create($reqPrefs);
+          $response = file_get_contents($uri, false, $stream_context);
+          $fixtures = json_decode($response);
+      ?>-->
         <div class="container">
                 <div class="page-header">
                     <h1>All Statistics</h1>
@@ -78,14 +122,11 @@
                       <div class="dropdown">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown
                         <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                          <li><a href="#">HTML</a></li>
-                          <li><a href="#">CSS</a></li>
-                          <li><a href="#">JavaScript</a></li>
+                        <ul class="dropdown-menu" id="dropdownMenu">
                         </ul>
-  </div>
-</div>
-                </div>
+                    </div>
+
+              </div>
       <footer class="container-fluid text-center">
         <p>Footer Text</p>
       </footer>
