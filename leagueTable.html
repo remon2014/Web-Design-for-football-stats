@@ -1,0 +1,130 @@
+<?php
+  include 'FootballData.php';
+  date_default_timezone_set("Europe/London");
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>League Table</title>
+  <link href="/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <style>
+  /* Remove the navbar's default margin-bottom and rounded borders */
+  .navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
+  /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+  .row.content {height: 450px}
+
+  /* Set gray background color and 100% height */
+  .sidenav {
+    padding-top: 20px;
+    background-color: #f1f1f1;
+    height: 100%;
+  }
+
+  /* Set black background color, white text and some padding */
+  footer {
+    background-color: #555;
+    color: white;
+    padding: 15px;
+  }
+
+  /* On small screens, set height to 'auto' for sidenav and grid */
+  @media screen and (max-width: 767px) {
+    .sidenav {
+      height: auto;
+      padding: 15px;
+    }
+    .row.content {height:auto;}
+  }
+</style>
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/index.html">FootyStats</a>
+      </div
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="/fixtures.html">Fixtures</a></li>
+          <li><a href="/results.html">Results</a></li>
+          <li><a href="/teams.html">Teams</a></li>
+          <li class="active"><a href="/leagueTable.html">League Table</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+              <li><a href="/allStats.html">All Statistics</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+                <?php
+                // Create instance of API class
+                $api = new FootballData();
+                // fetch and dump summary data for premier league' season 2015/16
+                $soccerseason = $api->getSoccerseasonById(445);
+                echo "<p><hr><p>"; ?>
+
+            <?php
+                echo "<p><hr><p>";
+                // fetch players for a specific team
+                $league_tables = $api->getSoccerseasonById(445)->getLeagueTable();
+            ?>
+            
+            </script>
+            <div class="container">
+                <div class="page-header">
+                    <h1><?php echo $league_tables->leagueCaption; ?></h1>
+                </div>
+            <table class="table table-striped" id="players_table">
+                <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Team</th>
+                    <th>Pl</th> 
+                    <th>Goals</th>
+                    <th>Goals Against</th>
+                    <th>Goal Difference</th>
+                    <th>Pts</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php for ($x = 0; $x < count($league_tables->standing); $x++) { ?>
+                <tr>
+                    <td><?php echo $league_tables->standing[$x]->position; ?></td>
+                    <td> <a href="/teams.html?team=<?php echo($league_tables->standing[$x]->teamName); ?>"><?php echo $league_tables->standing[$x]->teamName; ?></a></td>
+                    <td><?php echo $league_tables->standing[$x]->playedGames; ?></td>
+                    <td><?php echo $league_tables->standing[$x]->goals; ?></td>
+                    <td><?php echo $league_tables->standing[$x]->goalsAgainst; ?></td>
+                    <td><?php echo $league_tables->standing[$x]->goalDifference; ?></td>
+                    <td><?php echo $league_tables->standing[$x]->points; ?></td>
+                </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+            <script type="text/javascript">
+            $(document).ready(function(){
+                $('#players_table').DataTable(
+                    {
+                        paging: false,
+                    }
+                );
+            });
+            </script>
+        </div>
+      <footer class="container-fluid text-center">
+        <p>Footer Text</p>
+      </footer>
+    </body>
+</html>
