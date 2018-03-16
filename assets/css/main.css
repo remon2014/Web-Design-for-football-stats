@@ -2020,7 +2020,7 @@
 		input[type="reset"].alt,
 		button.alt,
 		.button.alt {
-			background: #2B252C;
+			background: #39e600;
 		}
 
 			input[type="button"].alt:hover,
@@ -2028,7 +2028,7 @@
 			input[type="reset"].alt:hover,
 			button.alt:hover,
 			.button.alt:hover {
-				background: #3B353C;
+				background: #39e600;
 			}
 
 /* Post */
@@ -2096,7 +2096,7 @@
 
 	#header {
 		position: relative;
-		background-image: url("../../images/header.jpg");
+		background-image: url("../../images/football_boy.jpg");
 		background-size: cover;
 		background-position: center center;
 		background-attachment: fixed;
