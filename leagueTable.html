@@ -169,9 +169,56 @@
                 );
             });
             </script>
+			<?php
+				$pos_one = $league_tables->standing[0]->position;
+			 	$position_one = $league_tables->standing[0]->goals;
+				$position_oneName = $league_tables->standing[0]->teamName;
+				$position_two = $league_tables->standing[1]->goals; 
+				$position_three = $league_tables->standing[2]->goals;
+			?>
 		</section>
+		<script type="text/javascript">
+			var pos_oneFromPhp=<?php echo json_encode($pos_one); ?>;
+      		document.write(pos_oneFromPhp);
+			var position_oneNameFromPhp=<?php echo json_encode($position_oneName); ?>;
+      		document.write(position_oneNameFromPhp);
+			var position_oneFromPhp=<?php echo json_encode($position_one); ?>;
+      		document.write(position_oneFromPhp);
+
+			var position_twoFromPhp=<?php echo json_encode($position_two); ?>;
+      		document.write(position_twoFromPhp);
+
+			var position_threeFromPhp=<?php echo json_encode($position_three); ?>;
+      		document.write(position_threeFromPhp);
+		</script>
+
 		<section>
-			
+			<div id="piechart"></div>
+
+			<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+			<script type="text/javascript">
+			// Load google charts
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart);
+
+
+			// Draw the chart and set the chart values
+			function drawChart() {
+			var data = google.visualization.arrayToDataTable([ 
+			['Teams', 'Goals Scored'],
+			[pos_oneFromPhp && position_oneNameFromPhp, position_oneFromPhp],
+			['Manchester United', position_twoFromPhp],
+			['Tottenham Hotspur FC', position_threeFromPhp],
+			]);
+			// Optional; add a title and set the width and height of the chart
+			var options = {'title':'My Average Day', 'width':600, 'height':500};
+
+			// Display the chart inside the <div> element with id="piechart"
+			var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+			chart.draw(data, options);
+			}
+			</script>
 		</section>
 
 				</div>
