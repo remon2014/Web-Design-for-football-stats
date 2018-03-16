@@ -113,7 +113,7 @@
 					<div class="container">
 						<article id="main" class="special">
 							<header>
-								<h2><a href="#">League table</a></h2>
+								<h2><a href="/leagueTable.html">League table</a></h2>
 								<p>
 									View the current standings
 								</p>
@@ -130,11 +130,11 @@
                             // fetch players for a specific team
                             $league_tables = $api->getSoccerseasonById(445)->getLeagueTable();
                         ?>
-							<section>
-								<header>
-									<h3><?php echo $league_tables->leagueCaption; ?></h3>
-								</header>
-                            <table class="table table-striped" id="players_table">
+				<section>
+					<header>
+						<h3><?php echo $league_tables->leagueCaption; ?></h3>
+					</header>
+				<table class="table" id="players_table">
                 <thead>
                 <tr>
                     <th>Position</th>
@@ -161,39 +161,77 @@
                 </tbody>
             </table>
             <script type="text/javascript">
-            $(document).ready(function(){
-                $('#players_table').DataTable(
-                    {
-                        paging: false,
-                    }
-                );
-            });
+				$(document).ready(function(){
+					$('#players_table').DataTable(
+						{
+							paging: false,
+						}
+					);
+				});
             </script>
 			<?php
+				$gamesPlayed = $league_tables->standing[0]->playedGames;
+
 				$pos_one = $league_tables->standing[0]->position;
-			 	$position_one = $league_tables->standing[0]->goals;
 				$position_oneName = $league_tables->standing[0]->teamName;
-				$position_two = $league_tables->standing[1]->goals; 
-				$position_three = $league_tables->standing[2]->goals;
+			 	$position_oneGoals = $league_tables->standing[0]->goals;
+				$position_oneGoalsAgainst = $league_tables->standing[0]->goalsAgainst;
+				$position_oneGoalDifference = $league_tables->standing[0]->goalDifference;
+				
+				$pos_two = $league_tables->standing[1]->position;
+				$position_twoName = $league_tables->standing[1]->teamName;
+				$position_twoGoals = $league_tables->standing[1]->goals;
+				$position_twoGoalsAgainst = $league_tables->standing[1]->goalsAgainst;
+				$position_twoGoalDifference = $league_tables->standing[1]->goalDifference; 
+
+				$pos_three = $league_tables->standing[2]->position;
+				$position_threeName = $league_tables->standing[2]->teamName;
+				$position_threeGoals = $league_tables->standing[2]->goals;
+				$position_threeGoalsAgainst = $league_tables->standing[2]->goalsAgainst;
+				$position_threeGoalDifference = $league_tables->standing[2]->goalDifference;
+				
+				$pos_four = $league_tables->standing[3]->position;
+				$position_fourName = $league_tables->standing[3]->teamName;
+				$position_fourGoals = $league_tables->standing[3]->goals;
+				$position_fourGoalsAgainst = $league_tables->standing[3]->goalsAgainst;
+				$position_fourGoalDifference = $league_tables->standing[3]->goalDifference;
+				
 			?>
 		</section>
 		<script type="text/javascript">
+			var gamesPlayedFromPhp=<?php echo json_encode($gamesPlayed); ?>;
+
 			var pos_oneFromPhp=<?php echo json_encode($pos_one); ?>;
-      		document.write(pos_oneFromPhp);
 			var position_oneNameFromPhp=<?php echo json_encode($position_oneName); ?>;
-      		document.write(position_oneNameFromPhp);
-			var position_oneFromPhp=<?php echo json_encode($position_one); ?>;
-      		document.write(position_oneFromPhp);
+			var position_oneGoalsFromPhp=<?php echo json_encode($position_oneGoals); ?>;
+			var position_oneGoalsAgainstFromPhp=<?php echo json_encode($position_oneGoalsAgainst); ?>;
+			var position_oneGoalDifferenceFromPhp=<?php echo json_encode($position_oneGoalDifference); ?>;
 
-			var position_twoFromPhp=<?php echo json_encode($position_two); ?>;
-      		document.write(position_twoFromPhp);
+			var pos_twoFromPhp=<?php echo json_encode($pos_two); ?>;
+			var position_twoNameFromPhp=<?php echo json_encode($position_twoName); ?>;
+			var position_twoGoalsFromPhp=<?php echo json_encode($position_twoGoals); ?>;
+			var position_twoGoalsAgainstFromPhp=<?php echo json_encode($position_twoGoalsAgainst); ?>;
+			var position_twoGoalDifferenceFromPhp=<?php echo json_encode($position_twoGoalDifference); ?>;
 
-			var position_threeFromPhp=<?php echo json_encode($position_three); ?>;
-      		document.write(position_threeFromPhp);
+			var pos_threeFromPhp=<?php echo json_encode($pos_three); ?>;
+			var position_threeNameFromPhp=<?php echo json_encode($position_threeName); ?>;
+			var position_threeGoalsFromPhp=<?php echo json_encode($position_threeGoals); ?>;
+			var position_threeGoalsAgainstFromPhp=<?php echo json_encode($position_threeGoalsAgainst); ?>;
+			var position_threeGoalDifferenceFromPhp=<?php echo json_encode($position_threeGoalDifference); ?>;
+
+			var pos_fourFromPhp=<?php echo json_encode($pos_four); ?>;
+			var position_fourNameFromPhp=<?php echo json_encode($position_fourName); ?>;
+			var position_fourGoalsFromPhp=<?php echo json_encode($position_fourGoals); ?>;
+			var position_fourGoalsAgainstFromPhp=<?php echo json_encode($position_fourGoalsAgainst); ?>;
+			var position_fourGoalDifferenceFromPhp=<?php echo json_encode($position_fourGoalDifference); ?>;
+
 		</script>
 
 		<section>
-			<div id="piechart"></div>
+			<div id="GoalsScored"></div>
+			<div id="GoalsAgainst"></div>
+			<div id="GoalDifference"></div>
+			<div id="progress"></div>
 
 			<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -207,15 +245,99 @@
 			function drawChart() {
 			var data = google.visualization.arrayToDataTable([ 
 			['Teams', 'Goals Scored'],
-			[pos_oneFromPhp 	&& position_oneNameFromPhp, position_oneFromPhp],
-			['Manchester United', position_twoFromPhp],
-			['Tottenham Hotspur FC', position_threeFromPhp],
+			[position_oneNameFromPhp, position_oneGoalsFromPhp],
+			[position_twoNameFromPhp, position_twoGoalsFromPhp],
+			[position_threeNameFromPhp, position_threeGoalsFromPhp],
+			[position_fourNameFromPhp, position_fourGoalsFromPhp]
 			]);
 			// Optional; add a title and set the width and height of the chart
-			var options = {'title':'My Average Day', 'width':600, 'height':500};
+			var options = {'title':'Goals Scored by the top four', 'width':600, 'height':500};
 
 			// Display the chart inside the <div> element with id="piechart"
-			var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+			var chart = new google.visualization.PieChart(document.getElementById('GoalsScored'));
+			chart.draw(data, options);
+			}
+			</script>
+
+
+			<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+			<script type="text/javascript">
+			// Load google charts
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart);
+
+
+			// Draw the chart and set the chart values
+			function drawChart() {
+			var data = google.visualization.arrayToDataTable([ 
+			['Teams', 'Goals Against'],
+			[position_oneNameFromPhp, position_oneGoalsAgainstFromPhp],
+			[position_twoNameFromPhp, position_twoGoalsAgainstFromPhp],
+			[position_threeNameFromPhp, position_threeGoalsAgainstFromPhp],
+			[position_fourNameFromPhp, position_fourGoalsAgainstFromPhp]
+			]);
+			// Optional; add a title and set the width and height of the chart
+			var options = {'title':'Goals Conceded by the top four', 'width':600, 'height':500,
+			slices: {  0: {offset: 0.1},
+                    3: {offset: 0.2}
+			},
+			};
+
+			// Display the chart inside the <div> element with id="piechart"
+			var chart = new google.visualization.PieChart(document.getElementById('GoalsAgainst'));
+			chart.draw(data, options);
+			}
+			</script>
+
+			<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+			<script type="text/javascript">
+			// Load google charts
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart);
+
+
+			// Draw the chart and set the chart values
+			function drawChart() {
+			var data = google.visualization.arrayToDataTable([ 
+			['Teams', 'Goal Difference'],
+			[position_oneNameFromPhp, position_oneGoalDifferenceFromPhp],
+			[position_twoNameFromPhp, position_twoGoalDifferenceFromPhp],
+			[position_threeNameFromPhp, position_threeGoalDifferenceFromPhp],
+			[position_fourNameFromPhp, position_fourGoalDifferenceFromPhp]
+			]);
+			// Optional; add a title and set the width and height of the chart
+			var options = {'title':'Goal Difference of the top four', 'width':600, 'height':500,
+			pieHole: 0.5};
+
+			// Display the chart inside the <div> element with id="piechart"
+			var chart = new google.visualization.PieChart(document.getElementById('GoalDifference'));
+			chart.draw(data, options);
+			}
+			</script>
+		
+			<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+			<script type="text/javascript">
+			// Load google charts
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart);
+
+
+			// Draw the chart and set the chart values
+			function drawChart() {
+			var data = google.visualization.arrayToDataTable([ 
+			['Total Games', 'Games'],
+			['Games played', gamesPlayedFromPhp ],
+			['Total', 38 ]
+			]);
+			// Optional; add a title and set the width and height of the chart
+			var options = {'title':'Progress Pie chart', 'width':600, 'height':500,
+			pieHole: 0.5};
+
+			// Display the chart inside the <div> element with id="piechart"
+			var chart = new google.visualization.PieChart(document.getElementById('progress'));
 			chart.draw(data, options);
 			}
 			</script>
@@ -370,12 +492,15 @@
 		</div>
 
 		<!-- Scripts -->
+			<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+			<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.dropotron.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/jquery.onvisible.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>
 			<script src="assets/js/util.js"></script>
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
 

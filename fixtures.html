@@ -140,7 +140,7 @@
 
 							?>
 					<section>		
-						<div class="dropdown">
+						<!--<div class="dropdown">
 							<button class="dropbtn" type="button" class="btn btn-primary dropdown-toggle" >Select Team</button>
 								<div class="dropdown-content">
  									 <?php
@@ -153,13 +153,27 @@
                                	 <?php }
                    				 ?>
 								</div>
-						</div>
+						</div>-->
+						<form action="/fixtures.php" method="GET">
+							<select name="team">
+								<option value="0">Select</option>
+										<?php
+											$teams = $api->getSoccerseasonById(445)->getTeams();
+											
+											foreach($teams as $t)
+											{?>
+											<option><a href="?team=<?php echo($t->name); ?>" > <?php echo($t->name) ?> </a></option>     
+									<?php }
+									?>
+							</select>
+							<input type="submit" value="Submit">
+							</form>
 					</section>	
 							<section>
 								<header>
 									<h3>All the matches of <?php echo $team->_payload->name; ?> :</h3>
 								</header>
-	                <table class="table table-striped" id="fixtures_table">
+	                <table class="table" id="fixtures_table">
                   <thead>
                     <tr>
                         <th>Date</th>
@@ -352,6 +366,7 @@
 			<script src="assets/js/jquery.onvisible.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>
 			<script src="assets/js/util.js"></script>
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
 
