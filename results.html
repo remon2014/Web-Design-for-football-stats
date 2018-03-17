@@ -152,6 +152,9 @@
 											<option value="<?php echo $i;?>"><?php echo $i;?></option>
 										<?php
 									}
+														if(isset($_POST['team'])){
+						$matchday = $_POST['team'];
+					}
 								?>
 							</select>
 							<input type="submit" value="Submit">
@@ -159,7 +162,7 @@
 						</section>
 							<section>
 								<header>
-									<h3>Results for the 1st matchday of <?php echo $soccerseason->payload->caption; ?></h3>
+									<h3> Matchday <?php echo $matchday?> of <?php echo $soccerseason->payload->caption; ?></h3>
 								</header>
 	                 <table class="table" id="results_table">
                   <thead>
