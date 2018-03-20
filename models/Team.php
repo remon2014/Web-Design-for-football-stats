@@ -39,6 +39,13 @@ class Team {
         return json_decode($response);
     }
 
+    // public function getHead2head($head2head = "") {
+    //     $uri = $this->_payload->fixtures->href .'&head2head=' . $head2head;
+    //     $response = file_get_contents($uri, false, stream_context_create($this->reqPrefs));
+
+    //     return json_decode($response);
+    // }
+
     /**
      * Function returns all players of the team
      *

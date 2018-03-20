@@ -62,7 +62,12 @@
           <li><a href="/fixtures.html">Fixtures</a></li>
           <li><a href="/results.html">Results</a></li>
           <li><a href="/teams.html">Teams</a></li>
-          <li><a href="/leagueTable.html">League Table</a></li>
+          <li>
+									<a href="/leagueTable.html">League Table</a>
+									<ul>
+										<li><a href="/leagueTableTopFour.html">League Table and top 4 stats</a></li>
+									</ul>
+								</li>
           <li class="active"><a href="/vs.html">Head2Head</a></li> 
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -92,8 +97,13 @@
                 $fixtures = $response->getFixtures()->fixtures;   
                 $head_to_heads = $response->getFixtures()->head2head;
                 
+                public function getFixture($id, $head="");
+	{	
+		$fixture = $this->client->get( "fixtures/{$id}/?head2head={$head}")->getBody();
+		return json_decode($fixture);
+	}
                      ?>
-<form action="process.php" method="get">
+<form action="vs.php" method="GET">
 <select>
     <option value="0">Select</option>
     <?php
