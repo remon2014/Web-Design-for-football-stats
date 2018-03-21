@@ -71,7 +71,7 @@
 									</ul>
 								</li>
 								<li class="active">
-									<a href="#">Dropdown</a>
+									<a href="#">Additional Statistics</a>
 									<ul>
 										<li><a href="/winRecord.html">Win Records</a></li>
 										<li><a href="/lossRecord.html">Loss Record</a></li>
@@ -323,7 +323,7 @@
 								<hr class="first" />
 								<section>
 									<header>
-										<h3><a href="#">Top 4 Statistics</a></h3>
+										<h3><a href="#">Home losses vs Away losses</a></h3>
 									</header>
 									<p>
 										<div id="GoalsScored"></div>
@@ -344,7 +344,7 @@
 											[position_fourNameFromPhp, position_fourGoalsFromPhp]
 											]);
 											// Optional; add a title and set the width and height of the chart
-											var options = {'title':'Goals Scored by the top four', 'width':600, 'height':500};
+											var options = {'title':'Home losses vs Away losses', 'width':600, 'height':500};
 
 											// Display the chart inside the <div> element with id="piechart"
 											var chart = new google.visualization.PieChart(document.getElementById('GoalsScored'));
@@ -352,62 +352,6 @@
 											}
 											</script>
 
-										<div id="GoalsAgainst"></div>
-											<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-												<script type="text/javascript">
-												// Load google charts
-												google.charts.load('current', {'packages':['corechart']});
-												google.charts.setOnLoadCallback(drawChart);
-
-
-												// Draw the chart and set the chart values
-												function drawChart() {
-												var data = google.visualization.arrayToDataTable([ 
-												['Teams', 'Goals Against'],
-												[position_oneNameFromPhp, position_oneGoalsAgainstFromPhp],
-												[position_twoNameFromPhp, position_twoGoalsAgainstFromPhp],
-												[position_threeNameFromPhp, position_threeGoalsAgainstFromPhp],
-												[position_fourNameFromPhp, position_fourGoalsAgainstFromPhp]
-												]);
-												// Optional; add a title and set the width and height of the chart
-												var options = {'title':'Goals Conceded by the top four', 'width':600, 'height':500,
-												slices: {  0: {offset: 0.1},
-														3: {offset: 0.2}
-												},
-												};
-
-												// Display the chart inside the <div> element with id="piechart"
-												var chart = new google.visualization.PieChart(document.getElementById('GoalsAgainst'));
-												chart.draw(data, options);
-												}
-												</script>
-
-										<div id="GoalDifference"></div>
-											<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-												<script type="text/javascript">
-												// Load google charts
-												google.charts.load('current', {'packages':['corechart']});
-												google.charts.setOnLoadCallback(drawChart);
-
-
-												// Draw the chart and set the chart values
-												function drawChart() {
-												var data = google.visualization.arrayToDataTable([ 
-												['Teams', 'Goal Difference'],
-												[position_oneNameFromPhp, position_oneGoalDifferenceFromPhp],
-												[position_twoNameFromPhp, position_twoGoalDifferenceFromPhp],
-												[position_threeNameFromPhp, position_threeGoalDifferenceFromPhp],
-												[position_fourNameFromPhp, position_fourGoalDifferenceFromPhp]
-												]);
-												// Optional; add a title and set the width and height of the chart
-												var options = {'title':'Goal Difference of the top four', 'width':600, 'height':500,
-												pieHole: 0.5};
-
-												// Display the chart inside the <div> element with id="piechart"
-												var chart = new google.visualization.PieChart(document.getElementById('GoalDifference'));
-												chart.draw(data, options);
-												}
-											</script>
 
 									</p>
 									</div>
