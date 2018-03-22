@@ -143,6 +143,13 @@
                                         <?php 
                                             if(isset($_POST['homeDraw'])){
                                                     $selectedTeamHomeDraw = $_POST['homeDraw'];
+                                                    $selectedTeamHomeAwayDraw = mysqli_real_escape_string($conn, $_POST['homeDraw']);
+                                                    $sqlHomeAwayDraw = "SELECT DISTINCT `Date`, `HomeTeam`, `AwayTeam`, `FTHG`, `FTAG`FROM `stats` WHERE `AwayTeam` ='$selectedTeamHomeAwayDraw' AND `FTR` = \"D\" ORDER BY `Date` ASC";
+                                                    $resultHomeAwayDraw = $conn->query($sqlHomeAwayDraw);    
+                                                            
+                                                    $countHomeAwayDraw = mysqli_num_rows($resultHomeAwayDraw);
+                                                                
+                                                    $lastUsedHomeAwayDraw = $countHomeAwayDraw; 
                                         }
                                 
                                         $sqlHomeDraw = "SELECT DISTINCT `Date`, `HomeTeam`, `AwayTeam`, `FTHG`, `FTAG`FROM `stats` WHERE `HomeTeam` ='$selectedTeamHomeDraw' AND `FTR` = \"D\" ORDER BY `Date` ASC";
@@ -158,7 +165,11 @@
                                             <td><?php echo $rows['FTAG']; ?></td>
                                         </tr>
                                         <?php
-                                    } ?>
+                                    } 
+                                    $countHomeDraw = mysqli_num_rows($resultHomeDraw);
+                                                
+                                    $lastUsedHomeDraw = $countHomeDraw;?>
+                                     
                                         </tbody>
                                     </table>
                         
@@ -235,7 +246,8 @@
                                                 <td><?php echo $rows['FTAG']; ?></td>
                                             </tr>
                                             <?php
-                                        } ?>
+                                        } 
+                                       ?>
                                             </tbody>
                                         </table>
                             
@@ -259,61 +271,9 @@
                     </article>
                 </div>
 <!------------------------------------------data-for-pie-charts---------------------------------------------------------->
-			<?php
-				$gamesPlayed = $league_tables->standing[0]->playedGames;
-
-				$pos_one = $league_tables->standing[0]->position;
-				$position_oneName = $league_tables->standing[0]->teamName;
-			 	$position_oneGoals = $league_tables->standing[0]->goals;
-				$position_oneGoalsAgainst = $league_tables->standing[0]->goalsAgainst;
-				$position_oneGoalDifference = $league_tables->standing[0]->goalDifference;
-				
-				$pos_two = $league_tables->standing[1]->position;
-				$position_twoName = $league_tables->standing[1]->teamName;
-				$position_twoGoals = $league_tables->standing[1]->goals;
-				$position_twoGoalsAgainst = $league_tables->standing[1]->goalsAgainst;
-				$position_twoGoalDifference = $league_tables->standing[1]->goalDifference; 
-
-				$pos_three = $league_tables->standing[2]->position;
-				$position_threeName = $league_tables->standing[2]->teamName;
-				$position_threeGoals = $league_tables->standing[2]->goals;
-				$position_threeGoalsAgainst = $league_tables->standing[2]->goalsAgainst;
-				$position_threeGoalDifference = $league_tables->standing[2]->goalDifference;
-				
-				$pos_four = $league_tables->standing[3]->position;
-				$position_fourName = $league_tables->standing[3]->teamName;
-				$position_fourGoals = $league_tables->standing[3]->goals;
-				$position_fourGoalsAgainst = $league_tables->standing[3]->goalsAgainst;
-				$position_fourGoalDifference = $league_tables->standing[3]->goalDifference;
-				
-			?>
-
 			<script type="text/javascript">
-						var gamesPlayedFromPhp=<?php echo json_encode($gamesPlayed); ?>;
-
-						var pos_oneFromPhp=<?php echo json_encode($pos_one); ?>;
-						var position_oneNameFromPhp=<?php echo json_encode($position_oneName); ?>;
-						var position_oneGoalsFromPhp=<?php echo json_encode($position_oneGoals); ?>;
-						var position_oneGoalsAgainstFromPhp=<?php echo json_encode($position_oneGoalsAgainst); ?>;
-						var position_oneGoalDifferenceFromPhp=<?php echo json_encode($position_oneGoalDifference); ?>;
-
-						var pos_twoFromPhp=<?php echo json_encode($pos_two); ?>;
-						var position_twoNameFromPhp=<?php echo json_encode($position_twoName); ?>;
-						var position_twoGoalsFromPhp=<?php echo json_encode($position_twoGoals); ?>;
-						var position_twoGoalsAgainstFromPhp=<?php echo json_encode($position_twoGoalsAgainst); ?>;
-						var position_twoGoalDifferenceFromPhp=<?php echo json_encode($position_twoGoalDifference); ?>;
-
-						var pos_threeFromPhp=<?php echo json_encode($pos_three); ?>;
-						var position_threeNameFromPhp=<?php echo json_encode($position_threeName); ?>;
-						var position_threeGoalsFromPhp=<?php echo json_encode($position_threeGoals); ?>;
-						var position_threeGoalsAgainstFromPhp=<?php echo json_encode($position_threeGoalsAgainst); ?>;
-						var position_threeGoalDifferenceFromPhp=<?php echo json_encode($position_threeGoalDifference); ?>;
-
-						var pos_fourFromPhp=<?php echo json_encode($pos_four); ?>;
-						var position_fourNameFromPhp=<?php echo json_encode($position_fourName); ?>;
-						var position_fourGoalsFromPhp=<?php echo json_encode($position_fourGoals); ?>;
-						var position_fourGoalsAgainstFromPhp=<?php echo json_encode($position_fourGoalsAgainst); ?>;
-						var position_fourGoalDifferenceFromPhp=<?php echo json_encode($position_fourGoalDifference); ?>;
+                var countHomeAwayDrawFromPHP=<?php echo json_encode($lastUsedHomeAwayDraw ); ?>;		
+				var countHomeDrawFromPHP=<?php echo json_encode($lastUsedHomeDraw ); ?>;
 
 					</script>
 
@@ -335,11 +295,9 @@
 											// Draw the chart and set the chart values
 											function drawChart() {
 											var data = google.visualization.arrayToDataTable([ 
-											['Teams', 'Goals Scored'],
-											[position_oneNameFromPhp, position_oneGoalsFromPhp],
-											[position_twoNameFromPhp, position_twoGoalsFromPhp],
-											[position_threeNameFromPhp, position_threeGoalsFromPhp],
-											[position_fourNameFromPhp, position_fourGoalsFromPhp]
+											['Home/Away', 'Number of Draws'],
+											['Home', countHomeDrawFromPHP],
+											['Away', countHomeAwayDrawFromPHP],
 											]);
 											// Optional; add a title and set the width and height of the chart
 											var options = {'title':'Home draws vs Loss draws', 'width':600, 'height':500};
